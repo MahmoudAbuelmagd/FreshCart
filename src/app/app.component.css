@@ -1,0 +1,13 @@
+:host{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+app-nav-main{
+  margin: 50px;
+}
+
+/* section{
+  padding-top: 200px !important;
+} */

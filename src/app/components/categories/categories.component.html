@@ -1,0 +1,35 @@
+<section class="p-5">
+  <h1
+    class="p-3 text-main mt-2 mb-5 fw-semibold border-2 border-bottom border-top text-center w-75 mx-auto">
+    All Categories</h1>
+  <div class="container ">
+    <div class="row gy-4">
+      @for( cat of categories; track cat._id){
+      <div class="col-md-3">
+        <div class="product cursor-pointer">
+          <div class="image">
+            <img [src]="cat.image" class="w-100" height="300px" [alt]="cat.name">
+          </div>
+          <h2 class="h4 p-3 my-2 text-center text-main"> {{cat.name}} </h2>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+<section class="py-4">
+  <h1
+    class="p-3 text-main mt-2 mb-5 fw-semibold border-2 border-bottom border-top text-center w-75 mx-auto">
+    subCategories </h1>
+  <div class="container ">
+    <div class="row gy-4">
+      @for( subcat of subCategories; track subcat._id){
+      <div class="col-md-3">
+        <div class="product cursor-pointer d-flex align-items-center justify-content-center" style="height: 100px;">
+          <h2 class="h4 my-2 text-center fw-bold"> {{subcat.name}} </h2>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
