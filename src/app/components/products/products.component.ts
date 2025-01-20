@@ -65,6 +65,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
         console.log(res);
         this._ToastrService.success(res.message,'',{timeOut: 2000, positionClass: 'toast-bottom-right'})
         this.arrIds = res.data
+        this._WishlistService.wishlistWritableCount.set(res.data.length)
+        
       }
     })
   }
@@ -74,6 +76,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         console.log(res);
         this._ToastrService.warning(res.message, '', { timeOut: 2000, positionClass: 'toast-bottom-right' })
         this.arrIds = res.data
+        this._WishlistService.wishlistWritableCount.set(res.data.length)
       }
     })
   }

@@ -23,9 +23,7 @@ export class WishlistComponent {
     this._WishlistService.getLoggedUserWishlist().subscribe({
       next: (res) => {
         console.log(res);
-
         this.wishlistData = res.data
-
       }
     })
   }
@@ -38,6 +36,8 @@ export class WishlistComponent {
           next: (res) => {
             console.log(res);
             this.wishlistData = res.data
+            this._WishlistService.wishlistWritableCount.set(res.count)
+            
           }
         })
       }

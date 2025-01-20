@@ -6,11 +6,12 @@ import { IProduct } from '../../core/interfaces/iproduct';
 import { CartService } from '../../core/services/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import { WishlistService } from '../../core/services/wishlist.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-specific-product',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   templateUrl: './specific-product.component.html',
   styleUrl: './specific-product.component.css'
 })
@@ -25,26 +26,22 @@ export class SpecificProductComponent implements OnInit ,OnDestroy{
   productDetailsImages!: any;
   productDetails!: IProduct;
   @ViewChild('mainImage') mainImage!: ElementRef
-  constructor(private _Renderer2:Renderer2){}
-  // ngAfterViewInit(): void {
-      
-  //     console.log(this.mainImage);
-  //     this._Renderer2.listen(this.mainImage.nativeElement, 'click', (event) => {
-  //       let currentClickedImg = event.target
-  //       console.log(currentClickedImg);
-  //     })
-  //   }
-    
-    
-  // }
+  arrOfIds !: string[] 
+  constructor(){}
   ngOnInit(): void {
     this._ActivatedRoute.paramMap.subscribe({
       next: (pInfo)=>{
         this.productId = pInfo.get('p_id');
         console.log(this.productId);
       }
+      
     })
-    
+    this._WishlistService.getLoggedUserWishlist().subscribe({
+      next: (res) => {
+        this.arrOfIds = res.data.map((item:any) => item._id)
+        console.log(this.arrOfIds);
+      }
+    })
     
     this.productSub = this._ProductsService.getProduct(this.productId).subscribe({
       next: (res) => {
@@ -52,13 +49,7 @@ export class SpecificProductComponent implements OnInit ,OnDestroy{
         this.productDetailsImages = res.data.images;
         console.log(res.data.images);
       },
-      error: (error) => {
-        console.log(error);
-      },
     })
-  }
-  ngOnDestroy(): void {
-    this.productSub?.unsubscribe();
   }
   addProduct(p_id : string):void {
     this._CartService.addProductToCart(p_id).subscribe({
@@ -66,7 +57,7 @@ export class SpecificProductComponent implements OnInit ,OnDestroy{
         console.log(res);
         this._CartService.cartTotalNumber.next(res.numOfCartItems)
         this._ToastrService.success(res.message,'',{timeOut: 2000, positionClass: 'toast-bottom-right'})
-
+        
       },
       error: (err) => {
         console.log(err);
@@ -77,14 +68,26 @@ export class SpecificProductComponent implements OnInit ,OnDestroy{
     this._WishlistService.addProductToWishlist(p_id).subscribe({
       next: (res) => {
         console.log(res);
+        this.arrOfIds = res.data
+        this._WishlistService.wishlistWritableCount.set(res.data.length)
         this._ToastrService.success(res.message,'',{timeOut: 2000, positionClass: 'toast-bottom-right'})
-      },
-      error:(err)=>{console.log(err);
-      },
+      }
+    })
+  }
+  deleteProductFromWishlist(p_id : string): void{
+    this._WishlistService.removeProductfromWishlist(p_id).subscribe({
+      next: (res) => {
+        this.arrOfIds = res.data
+        this._WishlistService.wishlistWritableCount.set(res.data.length)
+        this._ToastrService.info(res.message,'',{timeOut: 2000, positionClass: 'toast-bottom-right'})
+      }
     })
   }
   changeMainImg(eventInfo: any , element:HTMLImageElement) {
     let currentClickedImage = eventInfo.srcElement.src
     element.setAttribute('src', currentClickedImage)
+  }
+  ngOnDestroy(): void {
+    this.productSub?.unsubscribe();
   }
 }

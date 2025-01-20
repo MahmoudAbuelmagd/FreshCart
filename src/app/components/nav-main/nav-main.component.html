@@ -25,7 +25,10 @@
         <li class="nav-item me-2 border-start">
           <a class="nav-link cursor-pointer fw-semibold" routerLink="wishlist">
             Wishlist
-            <i class="fa-regular fa-heart fa-xl text-danger"> </i>
+            <span class="position-relative">
+              <i class="fa-regular fa-heart fa-xl text-danger"> </i>
+              <small class="position-absolute text-white px-2 py-1 rounded-2 bg-danger"> {{wishlistCount()}}</small>
+            </span>
           </a>
         </li>
         <li class="nav-item border-start border-end pe-1">

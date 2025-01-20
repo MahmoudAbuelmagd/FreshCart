@@ -1,7 +1,9 @@
 import { Subscription } from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit, Signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
+import { WishlistService } from '../../core/services/wishlist.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-nav-main',
@@ -13,13 +15,15 @@ import { CartService } from '../../core/services/cart.service';
 export class NavMainComponent implements OnInit, OnDestroy {
   Subscription!: Subscription;
   userCart!: Subscription;
-  constructor(private _Router: Router, private _CartService: CartService) { }
+  wishlistCount: Signal<number> = computed(()=> this._WishlistService.wishlistWritableCount())
+  constructor(private _Router: Router, private _CartService: CartService,private _WishlistService:WishlistService) { }
   logOutUser(): void{
     sessionStorage.removeItem('token')
     this._Router.navigate(['/auth/login'])
   }
   cartNumber: number = 0;
   ngOnInit(): void{
+
     this.Subscription =  this._CartService.cartTotalNumber.subscribe({
       next: (data) => {
         this.cartNumber = data;
@@ -31,6 +35,11 @@ export class NavMainComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.cartNumber = res.numOfCartItems;
       },
+    })
+    this._WishlistService.getLoggedUserWishlist().subscribe({
+      next: (res) => {
+        this._WishlistService.wishlistWritableCount.set(res.count)
+      }
     })
   }
   ngOnDestroy(): void {

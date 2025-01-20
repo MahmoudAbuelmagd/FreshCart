@@ -8,7 +8,7 @@ export const reqErrorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((err) => {
       console.log(err);
-      _ToastrService.error(err.error.message, '',{timeOut: 2000 , positionClass: 'toast-bottom-right'})
+      // _ToastrService.error(err.error.message, '',{timeOut: 2000 , positionClass: 'toast-bottom-right'})
       return throwError(()=> err)
     })
   );
