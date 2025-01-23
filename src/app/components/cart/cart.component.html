@@ -1,0 +1,47 @@
+  <section class="container py-4 rounded-2 shadow bg-main-light mt-5">
+    <h2> Shop Cart: <span class="fs-4 fw-light text-muted">
+    @if(numOfCartItems != 0){
+        ({{numOfCartItems}} 
+        @if(numOfCartItems == 1){item}@else {items}
+        )
+      }@else {
+          ({{numOfCartItems}} items)
+      }
+    </span>
+  </h2>
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="text-main"> Total Cart Price: {{allCartItems?.totalCartPrice || 0}} EGP </p>
+      @if (allCartItems && allCartItems.products.length > 0) {
+        <button (click)="clearCart()" class="btn-main d-block w-25"> Empty Cart</button>
+      }
+    </div>
+    <div class="container">
+      @for(cartProduct of allCartItems?.products; track cartProduct.product._id){
+        <div class="row border-bottom border-1 py-4 justify-content-center align-items-center">
+        <div class="col-2">
+          <div class="item-image">
+            <img [src]="cartProduct.product.imageCover" class="w-100 object-fit-contain" height="200px" [alt]="cartProduct.product.title">
+          </div>
+        </div>
+        <div class="col-10 d-flex justify-content-between align-items-center">
+          <div class="itemInfo">
+            <h2 class="my-2 h4 fw-bolder"> {{cartProduct.product.title}}</h2>
+            <h3 class="text-main my-2 h5 fw-lighter "> price : {{cartProduct.price | currency : 'GBP'}}</h3>
+            <span (click)="deleteProduct(cartProduct.product._id)" class="cursor-pointer">
+              <i class="fa-solid fa-trash text-main me-1"></i>
+              Remove
+            </span>
+          </div>
+          <div class="itemCount fs-4 pe-3">
+            <i (click)="updateCount(cartProduct.product._id, cartProduct.count+1)" class="fa-solid fa-plus-circle text-main cursor-pointer"></i>
+            <span> {{cartProduct.count}} </span>
+            <i (click)="updateCount(cartProduct.product._id, cartProduct.count-1)" class="fa-solid fa-minus-circle text-main cursor-pointer"></i>
+          </div>
+        </div>
+        </div>
+      }
+    @if (allCartItems && allCartItems.products.length > 0) {
+      <button class="btn btn-main d-block mx-auto w-50 text-white my-3 fw-bold" [routerLink]="['/main/checkout', allCartItems._id]"> Checkout</button>
+    }
+    </div>
+</section>

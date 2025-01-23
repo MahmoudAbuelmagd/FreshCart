@@ -1,0 +1,45 @@
+<section class="pt-5 vh-100">
+  <section id="productDetails" class="py-5 my-3">
+    <div class="container">
+      <div class="row">
+        @if(productDetails){
+        <div class="col-md-5">
+            <img [src]="productDetails.imageCover" #mainImage class="mainImage w-100 object-fit-cover" height="450px" [alt]="productDetails.title">
+            <div class="sliderImgs mt-3 d-flex justify-content-center">
+              @for(imageUrl of productDetailsImages ; track $index){
+                <img [src]="imageUrl" (click)="changeMainImg($event, mainImage)" class="w-25 p-1 cursor-pointer" height="125px" alt="">
+              }
+            </div>
+          </div>
+        <div class="offset-1 col-md-6">
+          <div class="py-5">
+            <h2 class="fw-semibold mt-4"> {{productDetails.title}}</h2>
+            <p class="lead fs-6 my-3 fw-lighter"> {{productDetails.description}}</p>
+            <h3 class="text-main fw-bold"> {{productDetails.category.name}}</h3>
+            <div
+                class="priceRating mt-3 d-flex justify-content-between align-items-center">
+                <span class="fs-6"> {{productDetails.price}} EGP</span>
+                <div>
+                  @for( star of [1,2,3,4,5].slice(0, productDetails.ratingsAverage);
+                  track $index){ 
+                    <small> <i
+                      class="fa-solid fa-star rating-color"></i> </small>}
+                  @if(productDetails.ratingsAverage%1 !=0 ){<small><i
+                      class="fa-solid fa-star-half-stroke rating-color"></i></small>}
+                  <span> {{productDetails.ratingsAverage}} </span>
+                </div>
+              </div>
+              <div class="buttons d-flex p-4 justify-content-between align-items-center">
+                <button (click)="addProduct( productDetails._id)" class="btn-main w-75"> Add to cart 
+                  <i class="fa-solid fa-cart-plus fa-beat-fade ms-2"></i>
+                </button>
+                <span *ngIf="arrOfIds.includes(productDetails._id)" (click)="deleteProductFromWishlist(productDetails._id)" class="wishlist bg-white cursor-pointer border border-2 rounded-1 p-2"><i class="fa-solid text-danger fa-heart fa-xl" ></i> </span>
+                <span *ngIf="!arrOfIds.includes(productDetails._id)" (click)="addToWishlist(productDetails._id)" class="wishlist bg-white cursor-pointer border border-2 rounded-1 p-2"><i class="fa-regular fa-heart fa-xl" ></i> </span>
+                </div>
+          </div>
+        </div>
+      }
+      </div>
+    </div>
+  </section>
+</section>

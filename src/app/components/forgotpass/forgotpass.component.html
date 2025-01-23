@@ -1,0 +1,52 @@
+<section
+  class="bg-main-light p-4 w-75 mx-auto rounded rounded-2 shadow-sm my-5">
+  <div class="container py-5">
+    <h1 class="text-main fw-bold text-center">Forgot Password</h1>
+
+    <!-- verifing Email  -->
+    @if(currentStep == 1){
+
+    <form [formGroup]="verifyEmailForm" (ngSubmit)="verifyEmail()">
+      <div class="my-3">
+        <label class="mb-2" for="email"> Email</label>
+        <input class="form-control" type="email" formControlName="email"
+          id="email" placeholder="Enter your e-mail">
+      </div>
+      @if(showStatus){
+        <p class="p-3 border border-2 text-black bg-light-subtle fw-bold text-center rounded-1 w-75 mx-auto"> {{showStatus}}</p>
+      }
+      <button class="btn-main"> Verify Email </button>
+    </form>
+    }
+
+    <!-- verifing Email  -->
+    @if(currentStep == 2){
+    <form [formGroup]="verifyCodeForm" (ngSubmit)="verifyCode()">
+      <div class="my-3">
+        <label class="mb-2" for="resetCode"> Reset Code</label>
+        <input class="form-control" type="text" formControlName="resetCode"
+          id="resetCode"
+          placeholder="Enter a verfication code which sent in your mail">
+      </div>
+      <button class="btn-main"> Verify Code </button>
+    </form>
+    }
+
+    <!-- reset pass  -->
+    @if (currentStep == 3) {
+    <form [formGroup]="resetPasswordForm" (ngSubmit)="resetPass()">
+      <div class="my-3">
+        <label class="mb-2" for="email"> Email</label>
+        <input class="form-control" type="email" readonly formControlName="email"
+          id="email">
+      </div>
+      <div class="my-3">
+        <label class="mb-2" for="newPassword"> New Password</label>
+        <input class="form-control" type="password" formControlName="newPassword"
+          id="newPassword">
+      </div>
+      <button class="btn-main"> Reset Password </button>
+    </form>
+    }
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="pt-5">
+
+  <section
+  class="bg-main-light p-4 w-75 mx-auto rounded rounded-2 shadow-sm my-5">
+  <h2 class="text-main mb-3"> Checkout Informations</h2>
+  <form [formGroup]="checkoutForm" (ngSubmit)="submitInfo()">
+    <div formGroupName="shippingAddress">
+      <div class="my-3">
+        <label class="mb-2" for="details"> Details:</label>
+        <input formControlName="details" type="text" class="form-control"
+        placeholder="Your Address" />
+      </div>
+      
+      <div class="my-3">
+        <label class="mb-2" for="phone">Phone:</label>
+        <input id="phone" type="tel" formControlName="phone" name="phone"
+        class="form-control" placeholder="ex:01xxxxxxxxx" />
+      </div>
+      
+      <div class="my-3">
+        <label class="mb-2" for="city">City:</label>
+        <input id="city" formControlName="city" class="form-control"
+        placeholder="ex:Giza">
+      </div>
+    </div>
+    
+    <button type="submit" class="btn-main bg-main d-block mx-auto"> Pay
+      Now</button>
+    </form>
+  </section>
+</section>
