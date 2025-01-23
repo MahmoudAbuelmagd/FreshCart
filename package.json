@@ -9,6 +9,10 @@
     "test": "ng test",
     "serve:ssr:ecommerce": "node dist/ecommerce/server/server.mjs"
   },
+  "engines": {
+  "node": ">=16.0.0 <19.0.0", 
+  "npm": ">=8.0.0" 
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.0",
