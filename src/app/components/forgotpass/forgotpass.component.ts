@@ -75,9 +75,9 @@ export class ForgotpassComponent implements OnDestroy {
     })
   }
   ngOnDestroy(): void {
-    this.verifyEmailSub.unsubscribe();
-    this.verifyCodeSub.unsubscribe();
-    this.resetPassSub.unsubscribe();
+    this.verifyEmailSub?.unsubscribe();
+    this.verifyCodeSub?.unsubscribe();
+    this.resetPassSub?.unsubscribe();
     clearTimeout(this.clearTime);
   }
 }
