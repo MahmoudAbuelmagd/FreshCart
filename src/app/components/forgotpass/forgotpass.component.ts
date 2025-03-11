@@ -65,7 +65,9 @@ export class ForgotpassComponent implements OnDestroy {
     this.resetPassSub = this._AuthenticationService.resetPassword(this.resetPasswordForm.value).subscribe({
       next: (res) =>{
         console.log(res);
-        localStorage.setItem('token' , res.token)
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('token' , res.token)
+        }
         this.clearTime = setTimeout(() => {
           this._Router.navigate(["/login"])
         }, 2500)

@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, Renderer2, viewChild, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ProductsService } from '../../core/services/products.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';

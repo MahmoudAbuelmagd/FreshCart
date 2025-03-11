@@ -1,30 +1,23 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { BrandsService } from '../../core/services/brands.service';
-import { Subscription } from 'rxjs';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { IBrands } from '../../core/interfaces/ibrands';
+import { BrandsService } from '../../core/services/brands.service';
 
 @Component({
   selector: 'app-brands',
   standalone: true,
-  imports: [],
+  imports: [ NgFor, NgIf, AsyncPipe],
   templateUrl: './brands.component.html',
   styleUrl: './brands.component.css'
 })
-export class BrandsComponent implements OnInit,OnDestroy{
-  brandsSub!: Subscription;
-  brands!: IBrands[];
+export class BrandsComponent {
+  brands$: Observable<IBrands[]>;
   private readonly _BrandsService = inject(BrandsService);
-  ngOnInit(): void {
-    this.brandsSub = this._BrandsService.getBrands().subscribe({
-      next: (res) => {
-        console.log(res.data);
-        this.brands = res.data;
-      },
-      error:(err)=>{console.log(err);
-      },
-    })
-  }
-  ngOnDestroy(): void {
-    this.brandsSub?.unsubscribe();
-  }
+  constructor() {
+    this.brands$ = this._BrandsService.getBrands().pipe(
+      map(res => res.data)
+      )
+    }
+  
 }

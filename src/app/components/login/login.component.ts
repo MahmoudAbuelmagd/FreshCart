@@ -44,13 +44,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.apiRes = res.message;
           this.isLoading = false;
           this._AuthenticationService.loggedUser.next(true);
-          localStorage.setItem('token', res.token);
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('token', res.token);
+          }
           // decode the token 
           this._AuthenticationService.getDecodedToken()
           this.navigation = setTimeout(() => {
             this._Router.navigate(['/main/home']);
           }, 2000);
-        },
+        }
+        ,
         error: (err) => {
           this._AuthenticationService.loggedUser.next(false)
           console.log(err);

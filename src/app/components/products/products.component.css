@@ -1,3 +1,6 @@
 .container{
-  max-width: 94% !important;
+  max-width: 95% !important;
+}
+.title{
+  font: icon;
 }

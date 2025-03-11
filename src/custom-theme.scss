@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+// Define your custom green color palette
+$my-green-palette: mat.define-palette((
+  50: hsl(120, 89%, 90%),
+  100: hsl(120, 89%, 80%),
+  200: hsl(120, 89%, 70%),
+  300: hsl(120, 89%, 60%),
+  400: hsl(120, 89%, 50%),
+  500: hsl(120, 89%, 36%), // Your main color
+  600: hsl(120, 89%, 30%),
+  700: hsl(120, 89%, 25%),
+  800: hsl(120, 89%, 20%),
+  900: hsl(120, 89%, 15%),
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: black,
+    400: white,
+    500: white, // Ensures good contrast with text
+    600: white,
+    700: white,
+    800: white,
+    900: white
+  )
+));
+
+// Define the theme with your custom green
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-green-palette,
+    accent: mat.define-palette(mat.$pink-palette, A200),
+    warn: mat.define-palette(mat.$red-palette),
+  )
+));
+
+// Apply the theme globally
+@include mat.all-component-themes($my-theme);

@@ -1,2 +1,5 @@
 <app-nav-main/>
 <router-outlet></router-outlet>
+@if(showBtn){
+  <span (click)="toTopView()" class="arrowUp text-center cursor-pointer bg-main text-white p-2 rounded-circle z-3" > <i class="fa-solid fa-arrow-up"></i></span>
+}

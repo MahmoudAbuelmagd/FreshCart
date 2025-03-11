@@ -1,15 +1,39 @@
-<section class="py-4"> 
+<section class="py-4">
   <h1
     class="p-3 text-main mb-3 fw-semibold border-2 border-bottom border-top text-center w-75 mx-auto">
     All Products</h1>
-  <input [(ngModel)]="searchValue"
-    class="form-control w-50 mx-auto my-4 p-3 border-3 " type="text"
-    placeholder="Search for a product...">
   <div class="container">
+    <div class="d-flex gap-5 align-items-center justify-content-end pe-4">
+      <input [(ngModel)]="searchValue"
+        class="form-control w-50 my-4 p-3 mt-2 border-3 " type="text"
+        placeholder="Search for a product...">
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <i class="fa-solid fa-filter me-1 text-main fa-1x"></i>
+          Sort By </mat-label>
+        <mat-select disableRipple>
+          <mat-option value="Default"
+            (click)="getDefaultProducts()">Default</mat-option>
+          <mat-option value="Price from high to low" (click)="sortDSC()"> Price
+            from high to low </mat-option>
+          <mat-option value="Price from low to high" (click)="sortASC()"> Price
+            from low to high </mat-option>
+          <mat-option value="Best Seller" (click)="bestSeller()"> Best Seller
+          </mat-option>
+          <mat-option value="Top Rated" (click)="topRated()"> Top Rated
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="row gy-3">
-      @for(product of products | search : searchValue ; track product._id){
+      @for(product of products | search : searchValue | paginate: { id:
+      'pagination',
+      itemsPerPage: pageSize,
+      currentPage: pageNum,
+      totalItems: total }; track product._id){
       <div class="col-md-2 col-sm-6 p-2">
-        <div class="product cursor-pointer p-2 position-relative" [id]="product._id">
+        <div class="product cursor-pointer p-2 position-relative"
+          [id]="product._id">
           <div [routerLink]="['/main/product', product._id]">
             <div class="image position-relative">
               <img [src]="product.imageCover" class="w-100"
@@ -17,8 +41,8 @@
             </div>
             <div class="product-captions">
               <h2 class="h6 text-main mt-2"> {{product.category.name}}</h2>
-              <h2 class=" h6">
-                {{product.title.split(" ").slice(0,3).join(" ")}}</h2>
+              <h4 class=" h6 title">
+                {{product.title.split(" ").slice(0,3).join(" ")}}</h4>
               <div
                 class="priceRating d-flex justify-content-between align-items-center">
                 <span class="fs-6"> {{product.price}} EGP</span>
@@ -34,20 +58,38 @@
             </div>
           </div>
           @if(arrIds.includes(product._id)){
-            <span (click)="removeFromWishlist(product._id)" class="wishlist position-absolute bg-white cursor-pointer border border-2 rounded-1 p-2">
-              <i class="fa-solid text-danger fa-heart fa-xl" ></i> </span>
-            }
-            @if(!arrIds.includes(product._id)) {
-              <span (click)="addToWishlist(product._id)" class="wishlist position-absolute bg-white cursor-pointer border border-2 rounded-1 p-2">
-                <i class="fa-regular fa-heart fa-xl" ></i> </span>
-              
-            }
-          <button (click)="addProduct(product._id)" class="addCart btn-main w-100 mt-2 fs-6 cursor-pointer"> Add
+          <span (click)="removeFromWishlist(product._id)"
+            class="wishlist position-absolute bg-white cursor-pointer border border-2 rounded-1 p-2">
+            <i class="fa-solid text-danger fa-heart fa-xl"></i> </span>
+          }
+          @if(!arrIds.includes(product._id)) {
+          <span (click)="addToWishlist(product._id)"
+            class="wishlist position-absolute bg-white cursor-pointer border border-2 rounded-1 p-2">
+            <i class="fa-regular fa-heart fa-xl"></i> </span>
+
+          }
+          <button (click)="addProduct(product._id)"
+            class="addCart btn-main w-100 mt-2 fs-6 cursor-pointer"> Add
             to Cart <i
               class="fa-solid fa-cart-plus fa-beat-fade ms-2"></i></button>
         </div>
       </div>
       }
+    </div>
+    <div class="d-flex justify-content-center my-3">
+      <pagination-controls id="pagination"
+        (pageChange)="pageChanged($event)"
+        (pageBoundsCorrection)="pageChanged($event)"
+        [maxSize]="9"
+        [directionLinks]="true"
+        [autoHide]="true"
+        [responsive]="true"
+        previousLabel="Previous"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
     </div>
   </div>
 </section>

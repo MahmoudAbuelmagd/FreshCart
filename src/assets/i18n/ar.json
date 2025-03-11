@@ -1,0 +1,14 @@
+{
+  "navbar":{
+    "Home":"الرئيسية",
+    "Products":"المنتجات",
+    "Categories":"التصنيفات",
+    "Brands":"العلامات التجاريه",
+    "Cart":"السلة",
+    "Wishlist":"المفضلة",
+    "SignOut":"تسجيل خروج",
+    "Lang":"ع"
+  },
+  "Shop Popular Categories":"تسوق افضل التصنيفات",
+  "Most Popular Products":"اكثر المنتجات شيوعاً"
+}

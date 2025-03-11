@@ -45,10 +45,10 @@ export class RegisterComponent implements OnDestroy {
             
           },2500)
         },
-        // error: (error) => {
-        //   this.apiResponse = error.error.message
-        //   this.isLoading = false
-        // }
+        error: (error) => {
+          this.apiResponse = error.error.message
+          this.isLoading = false
+        }
       })} else {
       this.registerForm.setErrors({'missMatch':true})
       this.registerForm.markAllAsTouched()

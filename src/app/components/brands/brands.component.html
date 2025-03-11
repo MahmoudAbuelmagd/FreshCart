@@ -3,17 +3,16 @@
     class="p-3 text-main mt-2 mb-5 fw-semibold border-2 border-bottom border-top text-center w-75 mx-auto">
     All Brands</h1>
   <div class="container ">
-    <div class="row gy-4">
-      @for( brand of brands; track brand._id){
-      <div class="col-md-3">
-        <div class="product cursor-pointer p-2">
-          <div class="image">
-            <img [src]="brand.image" class="w-100" [alt]="brand.name">
+    <div *ngIf="brands$ | async as brands"> 
+      <div class="row gy-4">
+        <div *ngFor="let brand of brands" class="col-md-3">
+          <div class="product cursor-pointer p-2">
+            <div class="image">
+              <img [src]="brand.image" class="w-100" [alt]="brand.name">
+            </div>
           </div>
-          <!-- <h2 class="h4 my-2 text-center text-main"> {{brand.name}}</h2> -->
         </div>
       </div>
-      }
     </div>
   </div>
 </section>

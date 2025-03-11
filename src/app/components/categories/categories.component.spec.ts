@@ -14,10 +14,12 @@ describe('CategoriesComponent', () => {
     
     fixture = TestBed.createComponent(CategoriesComponent);
     component = fixture.componentInstance;
+    console.log("hiii");
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

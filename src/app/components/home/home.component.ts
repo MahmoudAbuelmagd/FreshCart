@@ -1,37 +1,40 @@
-import { CategoriesService } from './../../core/services/categories.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductsService } from '../../core/services/products.service';
-import { IProduct } from '../../core/interfaces/iproduct';
-import { Subscription } from 'rxjs';
-import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
-import { ICategory } from '../../core/interfaces/icategory';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CartService } from '../../core/services/cart.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs';
+import { ICategory } from '../../core/interfaces/icategory';
+import { IProduct } from '../../core/interfaces/iproduct';
+import { CartService } from '../../core/services/cart.service';
+import { ProductsService } from '../../core/services/products.service';
 import { WishlistService } from '../../core/services/wishlist.service';
+import { unSub } from '../../shared/unSub.class';
+import { CategoriesService } from './../../core/services/categories.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CarouselModule, RouterLink],
+  imports: [CarouselModule, RouterLink, TranslateModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
   
-export class HomeComponent implements OnInit, OnDestroy{
+export class HomeComponent extends unSub implements OnInit{
+  productData!: IProduct[];
+  categoriesData!: ICategory[];
+  numOfCartItems: number = 0;
+  arrIds: string[] = [];
   constructor(
     private _ProductsService: ProductsService,
     private _CategoriesService: CategoriesService,
     private _WishlistService: WishlistService,
     private _CartService: CartService,
-    private _ToastrService:ToastrService) { }
-  productsSub!: Subscription;
-  categoriesSub!: Subscription;
-  productData!: IProduct[];
-  categoriesData!: ICategory[];
-  numOfCartItems: number = 0;
-  arrIds: string[] = [];
+    private _ToastrService: ToastrService) { 
+      super()
+    }
   staticSliderOptions: OwlOptions = {
+    rtl:true,
     loop: true,
     mouseDrag: false,
     touchDrag: false,
@@ -58,6 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     nav: true
   }
   dynamicSliderOptions: OwlOptions = {
+    rtl:true,
     loop: true,
     mouseDrag: true,
     touchDrag: true,
@@ -90,20 +94,26 @@ export class HomeComponent implements OnInit, OnDestroy{
   }
   ngOnInit(): void {
     // this._NgxSpinnerService.show()
-    this.productsSub = this._ProductsService.getProducts().subscribe({
+    this._ProductsService.getProducts().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         this.productData = res.data.slice(0, 20);
         // this._NgxSpinnerService.hide()
       },
 
     })
-    this.categoriesSub = this._CategoriesService.getCats().subscribe({
+    this._CategoriesService.getCats().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res);
         this.categoriesData = res.data;
       }
     })
-    this._WishlistService.getLoggedUserWishlist().subscribe({
+    this._WishlistService.getLoggedUserWishlist().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         this.arrIds = res.data.map((item: any) => item._id);
         console.log(this.arrIds);
@@ -111,12 +121,11 @@ export class HomeComponent implements OnInit, OnDestroy{
       }
     })
   }
-  ngOnDestroy(): void {
-    this.productsSub?.unsubscribe();
-    this.categoriesSub?.unsubscribe();
-  }
+
   addProduct(p_id : string):void {
-    this._CartService.addProductToCart(p_id).subscribe({
+    this._CartService.addProductToCart(p_id).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         this.numOfCartItems = res.numOfCartItems;
         this._CartService.cartTotalNumber.next(res.numOfCartItems)
@@ -127,7 +136,9 @@ export class HomeComponent implements OnInit, OnDestroy{
     })
   }
   addProductWishlist(p_id: string): void{
-    this._WishlistService.addProductToWishlist(p_id).subscribe({
+    this._WishlistService.addProductToWishlist(p_id).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         this.arrIds = res.data
         console.log(res);
@@ -137,7 +148,9 @@ export class HomeComponent implements OnInit, OnDestroy{
     })
   }
   removeProductWishlist(p_id: string) {
-    this._WishlistService.removeProductfromWishlist(p_id).subscribe({
+    this._WishlistService.removeProductfromWishlist(p_id).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         this.arrIds = res.data
         console.log(this.arrIds);

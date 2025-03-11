@@ -40,7 +40,7 @@
       }
     </div>
     <div class="my-3">
-      <label class="mb-2" for="password"> password:</label>
+      <label class="mb-2" for="password"> Password:</label>
       <input [ngClass]="{
         'is-valid': !registerForm.get('password')?.errors && (registerForm.get('password')?.touched||registerForm.get('password')?.dirty),
         'is-invalid': registerForm.get('password')?.errors && (registerForm.get('password')?.touched||registerForm.get('password')?.dirty)
@@ -56,8 +56,8 @@
       }
     </div>
     <div class="my-3">
-      <label class="mb-2" for="rePassword"> rePassword:</label>
-      <input type="password" [ngClass]="{
+      <label class="mb-2" for="rePassword"> Confirm password:</label>
+    <input type="password" [ngClass]="{
         'is-valid': !registerForm.errors && (registerForm.get('rePassword')?.touched||registerForm.get('rePassword')?.dirty),
         'is-invalid': registerForm.errors && (registerForm.get('rePassword')?.touched||registerForm.get('rePassword')?.dirty)
       }"
@@ -67,7 +67,7 @@
         }
       </div>
       <div class="my-3">
-        <label class="mb-2" for="phone"> phone:</label>
+        <label class="mb-2" for="phone"> Phone:</label>
         <input [ngClass]="{
           'is-valid': !registerForm.get('phone')?.errors && (registerForm.get('phone')?.touched||registerForm.get('phone')?.dirty),
           'is-invalid': registerForm.get('phone')?.errors && (registerForm.get('phone')?.touched||registerForm.get('phone')?.dirty)

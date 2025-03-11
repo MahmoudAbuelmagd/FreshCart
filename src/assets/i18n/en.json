@@ -1,0 +1,15 @@
+{
+  "navbar":{
+    "Home":"Home",
+    "Products":"Products",
+    "Categories":"Categories",
+    "Brands":"Brands",
+    "Cart":"Cart",
+    "Wishlist":"Wishlist",
+    "SignOut":"SignOut",
+    "Lang":"Lang"
+  },
+  "Shop Popular Categories":"Shop Popular Categories",
+  "Most Popular Products":"Most Popular Products"
+
+}

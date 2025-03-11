@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300&display=swap");
-
+@import url('./custom-theme.scss');
 :root {
   --main-color: hsl(120, 89%, 36%);
   --light-color: #f0f3f2;
@@ -9,6 +9,48 @@
     rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
   --font-family: "Encode Sans Expanded", sans-serif;
   --rating-color: #ffc908;
+  --primary-color: hsl(120, 89%, 36%); /* Green */
+  --accent-color: hsl(120, 89%, 36%);  /* Green (same as primary for simplicity) */
+  --warn-color: #f44336;
+}
+/* Override the checkmark color in mat-select */
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  color: var(--primary-color); /* Green text for selected option */
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) .mat-pseudo-checkbox-checked {
+  background-color: var(--primary-color); /* Green background for checkmark */
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) .mat-pseudo-checkbox-checked::after {
+  color: white; /* White checkmark icon */
+}
+
+/* Override the color of values in mat-select */
+.mat-select-value {
+  color: var(--primary-color); /* Green text for selected value */
+}
+
+/* Override the color of the select arrow */
+.mat-select-arrow {
+  color: var(--primary-color); /* Green arrow */
+}
+
+/* Customize the outline color for mat-form-field */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--primary-color); /* Green outline */
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  color: var(--primary-color); /* Green outline when focused */
+}
+
+/* Override the ripple effect color */
+.mat-ripple-element {
+  background-color: var(--primary-color); /* Green ripple effect */
+}
+.ngx-pagination .current {
+  background: hsl(120, 96%, 22%) !important;
 }
 
 body {
@@ -102,4 +144,37 @@ span small{
 }
 body{
   background-image: url(assets/images/light-patten.svg);
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* handling mobile screens */
+@media screen and (max-width:768px){
+  button[type="submit"]{
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width:992px) {
+  .navbar-nav{
+    text-align: center;
+    max-width: 40%;
+    /* margin: 0 auto; */
+    margin-left: auto;
+  }
+  .dropdown-menu{
+    width: fit-content;
+    margin-left: auto;
+  }
+  #navbarSupportedContent{
+    margin-top: 10px;
+  }
+  
+
+}
+@media screen and (min-width:992px) and (max-width:1200px)
+{
+  .hidden{
+    display: none;
+  }
 }

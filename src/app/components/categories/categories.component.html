@@ -4,7 +4,7 @@
     All Categories</h1>
   <div class="container ">
     <div class="row gy-4">
-      @for( cat of categories; track cat._id){
+      @for( cat of categories(); track cat._id){
       <div class="col-md-3">
         <div class="product cursor-pointer">
           <div class="image">
@@ -23,9 +23,9 @@
     subCategories </h1>
   <div class="container ">
     <div class="row gy-4">
-      @for( subcat of subCategories; track subcat._id){
+      @for( subcat of subCategories(); track subcat._id){
       <div class="col-md-3">
-        <div class="product cursor-pointer d-flex align-items-center justify-content-center" style="height: 100px;">
+        <div class="product subcat cursor-pointer d-flex align-items-center justify-content-center">
           <h2 class="h4 my-2 text-center fw-bold"> {{subcat.name}} </h2>
         </div>
       </div>

@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { CategoriesService } from '../../core/services/categories.service';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { takeUntil } from 'rxjs';
 import { ICategory } from '../../core/interfaces/icategory';
-
+import { CategoriesService } from '../../core/services/categories.service';
+import { unSub } from './../../shared/unSub.class';
 @Component({
   selector: 'app-categories',
   standalone: true,
@@ -10,33 +10,33 @@ import { ICategory } from '../../core/interfaces/icategory';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
 })
-export class CategoriesComponent implements OnInit, OnDestroy {
-  categoriesSub!: Subscription;
-  subCats!: Subscription;
-  categories!: ICategory[];
-  subCategories!: ICategory[];
-  constructor(private _CategoriesService:CategoriesService){}
+export class CategoriesComponent extends unSub implements OnInit {
+  // categories!: ICategory[];
+  categories:WritableSignal<ICategory[]> = signal([])
+  subCategories: WritableSignal<ICategory[]> = signal([]);  
+  constructor(private _CategoriesService: CategoriesService) {
+    super();
+  }
   ngOnInit(): void {
-    this.categoriesSub = this._CategoriesService.getCats().subscribe({
+    this._CategoriesService.getCats().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res);
-        this.categories = res.data;
-      },
-      error: (err) => { console.log(err);
+        // this.categories = res.data;
+        this.categories.set(res.data)
       }
     })
-    this.subCats = this._CategoriesService.getSubCats().subscribe(
-      {
+    this._CategoriesService.getSubCats().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
         next: (res) => {
           console.log(res);
-          this.subCategories = res.data.slice(0,20);
-        },
-        error: (err) => { console.log(err);
+        this.subCategories.set(res.data.slice(0, 20)) ;
+        
         }
       }
     )
   }
-  ngOnDestroy(): void {
-    this.categoriesSub.unsubscribe();
-  }
+  
 }

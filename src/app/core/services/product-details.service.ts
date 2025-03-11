@@ -30,10 +30,7 @@ export class ProductDetailsService {
         this.productDetails = res.data;
         this.productDetailsImages = res.data.images;
         console.log(res.data.images);
-      },
-      error: (error) => {
-        console.log(error);
-      },
+      }
     })
   }
   ngOnDestroy(): void {

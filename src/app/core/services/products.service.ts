@@ -6,11 +6,11 @@ import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsService {
+export class ProductsService {  
 
   constructor(private _HttpClient: HttpClient) { }
-  getProducts(): Observable<any>{
-    return this._HttpClient.get(`${environment.baseURL}/api/v1/products`)
+  getProducts(pageSize:number = 1): Observable<any>{
+    return this._HttpClient.get(`${environment.baseURL}/api/v1/products?page=${pageSize}`)
   }
   getProduct(id:string|null): Observable<any>{
     return this._HttpClient.get(`${environment.baseURL}/api/v1/products/${id}`);

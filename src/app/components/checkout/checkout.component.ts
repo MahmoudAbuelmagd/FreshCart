@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrdersService } from '../../core/services/orders.service';
 import { ActivatedRoute} from '@angular/router';
+import { unSub } from '../../shared/unSub.class';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -10,12 +12,14 @@ import { ActivatedRoute} from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
-export class CheckoutComponent {
+export class CheckoutComponent extends unSub{
   detailsValues!: any;
   cartId!: any;
   constructor(private _FormBuilder: FormBuilder,
     private _OrdersService: OrdersService,
-    private _ActivatedRoute: ActivatedRoute) { }
+    private _ActivatedRoute: ActivatedRoute) { 
+      super()
+    }
   checkoutForm: FormGroup = this._FormBuilder.group({
     shippingAddress:this._FormBuilder.group({
       details: [null, [Validators.required]],
@@ -26,7 +30,9 @@ export class CheckoutComponent {
   submitInfo(): void{
     this.detailsValues = this.checkoutForm.value;
     console.log(this.detailsValues);
-    this._OrdersService.getCheckoutSession(this.detailsValues , this.cartId).subscribe({
+    this._OrdersService.getCheckoutSession(this.detailsValues , this.cartId).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res);
         console.log(res.session.url);
@@ -35,8 +41,6 @@ export class CheckoutComponent {
           // window.location.href = res.session.url;
           window.open(res.session.url, '_self');
         }
-      },
-      error:(err)=>{console.log(err);
       }
     })
   }
@@ -48,5 +52,4 @@ export class CheckoutComponent {
       }
     })
   }
-
 }

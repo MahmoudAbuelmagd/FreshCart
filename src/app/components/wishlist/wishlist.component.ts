@@ -4,6 +4,8 @@ import { CurrencyPipe, Location } from '@angular/common';
 import { IWishlist } from '../../core/interfaces/iwishlist';
 import { CartService } from '../../core/services/cart.service';
 import { ToastrService } from 'ngx-toastr';
+import { unSub } from '../../shared/unSub.class';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-wishlist',
@@ -12,27 +14,33 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css'
 })
-export class WishlistComponent {
-  wishlistData!: IWishlist[] | null;
+export class WishlistComponent extends unSub{
+  wishlistData!: IWishlist[];
   wishlistCount!: number;
   private readonly _WishlistService = inject(WishlistService)
   private readonly _CartService = inject(CartService)
   private readonly _ToastrService = inject(ToastrService)
   private readonly _location = inject(Location)
   ngOnInit(): void{
-    this._WishlistService.getLoggedUserWishlist().subscribe({
+    this._WishlistService.getLoggedUserWishlist().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res);
-        this.wishlistData = res.data
+        this.wishlistData = res.data;
       }
     })
   }
   
   deleteProductFromWishlist(p_id : string): void{
-    this._WishlistService.removeProductfromWishlist(p_id).subscribe({
+    this._WishlistService.removeProductfromWishlist(p_id).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res); // give id's of products
-        this._WishlistService.getLoggedUserWishlist().subscribe({
+        this._WishlistService.getLoggedUserWishlist().pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
           next: (res) => {
             console.log(res);
             this.wishlistData = res.data
@@ -44,7 +52,9 @@ export class WishlistComponent {
     })
   }
   addProduct(p_id : string):void {
-    this._CartService.addProductToCart(p_id).subscribe({
+    this._CartService.addProductToCart(p_id).pipe(
+      takeUntil(this.unSub$)
+    ).subscribe({
       next: (res) => {
         console.log(res.data);
         this._CartService.cartTotalNumber.next(res.numOfCartItems);
